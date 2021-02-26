@@ -13,15 +13,14 @@ def read():
     tasklist = [] # СПИСОК, В КОТОРЫЙ БУДЕМ КЛАСТЬ ID ТАСКОВ
     for column in column_data:
         task_data = requests.get(base_url.format('lists') + '/' + column['id'] + '/cards', params=auth_params).json()
-        for task in task_data:
-            tasklist.append(task["id"])
-        column_name = column['name'] + ' ' + tasklist[-1] + ': ' + str(len(task_data)) # СЧЁТЧИК ЗАДАЧ
+        column_name = column['name'] + ': ' + str(len(task_data)) # СЧЁТЧИК ЗАДАЧ
         print(column_name)
         if not task_data:
             print('\t' + 'Нет задач!')
             continue
         for task in task_data:
-            print('\t' + task['name'])
+            tasklist.append(task["id"])
+            print('\t' + task['name'] + ' ' + tasklist[-1])
 def create(name, column_name):
     column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
     for column in column_data:
