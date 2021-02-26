@@ -10,9 +10,11 @@ base_url = "https://api.trello.com/1/{}"
 board_id = "{}".format(login[2]) # ГЕНЕРИРУЕМ BOARD_ID НА ЛОГИНЕ
 def read():
 	column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
+	tasklist = [] # СПИСОК, В КОТОРЫЙ БУДЕМ КЛАСТЬ ID ТАСКОВ
 	for column in column_data:
+		tasklist.append(task["id"])
 		task_data = requests.get(base_url.format('lists') + '/' + column['id'] + '/cards', params=auth_params).json()
-		column_name = column['name'] + ': ' + str(len(task_data)) # СЧЁТЧИК ЗАДАЧ
+		column_name = column['name'] + ' ' + tasklist[column] + ': ' + str(len(task_data)) # СЧЁТЧИК ЗАДАЧ
 		print(column_name)
 		if not task_data:
 			print('\t' + 'Нет задач!')
@@ -36,7 +38,7 @@ def colreate(column_name): # ФУНКЦИЯ СОЗДАЕТ НОВУЮ КОЛОН
 			break
 def move(name, column_name):
 	tasklist = [] # СПИСОК, В КОТОРЫЙ БУДЕМ КЛАСТЬ ID ТАСКОВ
-	collist = [] # СПИСОК, В КОТОРЫЙ БУДЕМ КЛАСТЬ ID КОЛОНОК
+	collist = [] # СПИСОК, В КОТОРЫЙ БУДЕМ КЛАСТЬ NAME КОЛОНОК
 	column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
 	for column in column_data:
 		column_tasks = requests.get(base_url.format('lists') + '/' + column['id'] + '/cards', params=auth_params).json()
