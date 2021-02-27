@@ -48,15 +48,24 @@ def move(name, column_name):
                 collist.append(column["name"])
     for column in column_data:
         if column['name'] == column_name:
-            print("Задача 1 находится в колонке '{0}', её id={1}; Задача 2 находится в колонке '{2}', её id={3}".format(collist[0], tasklist[0], collist[1], tasklist[1]))
-            a = int(input("Какое значение вам необходимо переместить? (1 или 2)")) # ФУНКЦИЯ НЕ РАБОТАЕТ НА 3 И БОЛЕЕ ЭЛЕМЕНТАХ (ПО УСЛОВИЮ ЗАДАНИЯ)
+            if len(collist) == 3:
+                print("Задача 1 находится в колонке '{0}', её id={1}; Задача 2 находится в колонке '{2}', её id={3}; Задача 3 находится в колонке '{4}', её id={5}".format(collist[0], tasklist[0], collist[1], tasklist[1], collist[2], tasklist[2]))
+            elif len(collist) == 2:
+                print("Задача 1 находится в колонке '{0}', её id={1}; Задача 2 находится в колонке '{2}', её id={3}".format(collist[0], tasklist[0], collist[1], tasklist[1]))
+            elif len(collist) == 1:
+                print("Задача 1 находится в колонке '{0}', её id={1}".format(collist[0], tasklist[0]))
+            a = int(input("Какое значение вам необходимо переместить? (1 или 2 или 3, если есть)")) # ФУНКЦИЯ НЕ РАБОТАЕТ НА 3 И БОЛЕЕ ЭЛЕМЕНТАХ (ПО УСЛОВИЮ ЗАДАНИЯ)
             if a == 1:
                 requests.put(base_url.format('cards') + '/' + tasklist[0] + '/idList', data={'value': column['id'], **auth_params})
                 break
             elif a == 2:
                 requests.put(base_url.format('cards') + '/' + tasklist[1] + '/idList', data={'value': column['id'], **auth_params})
                 break
+            elif a == 3:
+                requests.put(base_url.format('cards') + '/' + tasklist[1] + '/idList', data={'value': column['id'], **auth_params})
+                break
             else:
+                print("Invalid property")
                 break
 if __name__ == "__main__":
     # <-- СЮДА МОЖНО ВСТАВЛЯТЬ ФУНКЦИИ ДЛЯ ТЕСТОВ. ПРИМЕРЫ ТЕСТОВ: colreate("На будущее"), move("Изучить Python", "В процессе")
