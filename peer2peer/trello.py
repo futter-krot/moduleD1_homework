@@ -20,7 +20,7 @@ def read():
             continue
         for task in task_data:
             tasklist.append(task["id"])
-            print('\t' + task['name'] + ' ' + tasklist[-1])
+            print('\t Task name: ' + task['name'] + ', Task id: ' + tasklist[-1])
 def create(name, column_name):
     column_data = requests.get(base_url.format('boards') + '/' + board_id + '/lists', params=auth_params).json()
     for column in column_data:
@@ -54,7 +54,10 @@ def move(name, column_name):
                 print("Задача 1 находится в колонке '{0}', её id={1}; Задача 2 находится в колонке '{2}', её id={3}".format(collist[0], tasklist[0], collist[1], tasklist[1]))
             elif len(collist) == 1:
                 print("Задача 1 находится в колонке '{0}', её id={1}".format(collist[0], tasklist[0]))
-            a = int(input("Какое значение вам необходимо переместить? (1 или 2 или 3, если есть)")) # ФУНКЦИЯ НЕ РАБОТАЕТ НА 3 И БОЛЕЕ ЭЛЕМЕНТАХ (ПО УСЛОВИЮ ЗАДАНИЯ)
+            else:
+                print("Слишком много задач(больше 3), либо задач нет - Задание не предусматривает такой исход. см. D1.10")
+                break
+            a = int(input("Какое значение вам необходимо переместить? (1 или 2 или 3, если есть)")) # ФУНКЦИЯ НЕ РАБОТАЕТ НА 4 И БОЛЕЕ ЭЛЕМЕНТАХ (ПО УСЛОВИЮ ЗАДАНИЯ)
             if a == 1:
                 requests.put(base_url.format('cards') + '/' + tasklist[0] + '/idList', data={'value': column['id'], **auth_params})
                 break
